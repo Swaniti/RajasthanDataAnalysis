@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form action="{% url 'analyse:index'%}" method="post">
+  {% csrf_token %}
+  <input type="radio" name="Maincategory" value="maincate1"> maincate1<br>
+  <input type="radio" name="Maincategory" value="maincate2"> maincate2<br>
+  <input type="radio" name="Maincategory" value="maincate3"> maincate3<br>
+  <input type="radio" name="Maincategory" value="maincate4"> maincate4<br>
+  <input type="radio" name="subcategory1" value="subcate11"> subcate11<br>
+  <input type="radio" name="subcategory1" value="subcate12"> subcate12<br>
+  <input type="radio" name="subcategory1" value="subcate13"> subcate13<br>
+  <input type="radio" name="subcategory2" value="subcate21"> subcate21<br>
+  <input type="radio" name="subcategory2" value="subcate22"> subcate22<br>
+  <input type="radio" name="subcategory2" value="subcate23"> subcate23<br>
+  <input type="radio" name="subcategory3" value="subcate31"> subcate31<br>
+  <input type="radio" name="subcategory3" value="subcate32"> subcate32<br>
+  <input type="submit" value="Submit">
+</form> 
+{% if csv %}
+    <ul>
+    {% for plot in csv %}
+        <li>{{ plot.url }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No csv are available.</p>
+{% endif %}
+{% if plots %}
+    <ul>
+    {% for plot in plots %}
+        <li>{{ plot }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No plots are available.</p>
+{% endif %}
+</body>
+</html>
