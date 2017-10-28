@@ -4,29 +4,20 @@
 
 <form action="{% url 'analyse:index'%}" method="post">
   {% csrf_token %}
-  <input type="radio" name="Maincategory" value="maincate1"> maincate1<br>
-  <input type="radio" name="Maincategory" value="maincate2"> maincate2<br>
-  <input type="radio" name="Maincategory" value="maincate3"> maincate3<br>
-  <input type="radio" name="Maincategory" value="maincate4"> maincate4<br>
-  <input type="radio" name="subcategory1" value="subcate11"> subcate11<br>
-  <input type="radio" name="subcategory1" value="subcate12"> subcate12<br>
-  <input type="radio" name="subcategory1" value="subcate13"> subcate13<br>
-  <input type="radio" name="subcategory2" value="subcate21"> subcate21<br>
+  <input type="radio" name="Maincategory" value="maincate1"> Patient traffic<br>
+  <input type="radio" name="Maincategory" value="maincate2"> Hour of day<br>
+  <input type="radio" name="Maincategory" value="maincate3"> Average time<br>
+  <input type="radio" name="Maincategory" value="maincate4"> Cases frequency<br>
+  <input type="radio" name="subcategory1" value="All"> All<br>
+  <input type="radio" name="subcategory1" value="Ajmer"> Ajmer<br>
+  <input type="radio" name="subcategory1" value="Alwar"> Alwar<br>
+  <input type="radio" name="subcategory2" value="All"> All<br>
   <input type="radio" name="subcategory2" value="subcate22"> subcate22<br>
   <input type="radio" name="subcategory2" value="subcate23"> subcate23<br>
-  <input type="radio" name="subcategory3" value="subcate31"> subcate31<br>
-  <input type="radio" name="subcategory3" value="subcate32"> subcate32<br>
+  <input type="radio" name="subcategory3" value="Public"> Public<br>
+  <input type="radio" name="subcategory3" value="Private"> Private<br>
   <input type="submit" value="Submit">
-</form> 
-{% if csv %}
-    <ul>
-    {% for plot in csv %}
-        <li>{{ plot.url }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No csv are available.</p>
-{% endif %}
+</form>
 {% if plots %}
     <ul>
     {% for plot in plots %}
@@ -36,5 +27,12 @@
 {% else %}
     <p>No plots are available.</p>
 {% endif %}
+
+{% if fig %}
+    <div>
+    {{fig}}
+    </div>
+{% endif %}
+
 </body>
 </html>
