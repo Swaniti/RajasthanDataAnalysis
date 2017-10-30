@@ -10,7 +10,7 @@
   <input type="radio" name="Maincategory" value="maincate4"> Cases frequency<br>
   <input type="radio" name="subcategory1" value="All"> All<br>
   <input type="radio" name="subcategory1" value="Ajmer"> Ajmer<br>
-  <input type="radio" name="subcategory1" value="Alwar"> Alwar<br>
+  <input type="radio" name="subcategory1" value="Alwer"> Alwer<br>
   <input type="radio" name="subcategory2" value="All"> All<br>
   <input type="radio" name="subcategory2" value="subcate22"> subcate22<br>
   <input type="radio" name="subcategory2" value="subcate23"> subcate23<br>
@@ -28,11 +28,9 @@
     <p>No plots are available.</p>
 {% endif %}
 
-{% if fig %}
-    <div>
-    {{fig}}
-    </div>
-{% endif %}
-
+{% load static %}
+{% with path as image_static %}
+  <img src="{% static image_static %}" alt="My image"/>
+{% endwith %}
 </body>
 </html>
