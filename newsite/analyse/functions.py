@@ -5,12 +5,27 @@ import seaborn as sns
 import math
 from datetime import datetime
 
-def patient_traffic(data, subcategory1):
+
+def analyser(data, maincate, subcategory1, subcategory3):
+    if maincate == 'maincate1':
+        return patient_traffic(data, subcategory1, subcategory3)
+    elif maincate == 'maincate2':
+        return cases_frequency(data, subcategory1, subcategory3)
+
+
+
+
+def patient_traffic(data, subcategory1="All", subcategory3="Not"):
     if subcategory1 == "All":
         data = data
     else:
         data = data[data['District'] == subcategory1]
-
+        
+    if (subcategory3 == "Government Hospital") or (subcategory3 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory3]
+    else:
+        data = data
+        
     data = data.sort_values(['Time'], ascending=[1])
     data = data['Time'].value_counts()
     data = data.sort_index()
@@ -40,4 +55,24 @@ def patient_traffic(data, subcategory1):
     fig.set_size_inches(11.7, 8.27, forward=True)
     ax = sns.barplot(x="month", y="freq", data=month)
     ax.set(xlabel='month', ylabel='freq')
+    return fig
+
+def cases_frequency(data, subcategory1="All", subcategory3="Not"):
+    if subcategory1 == "All":
+        data = data.copy()
+    else:
+        data = data[data['District'] == subcategory1].copy()
+        
+    if (subcategory3 == "Government Hospital") or (subcategory3 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory3].copy()
+    else:
+        data = data.copy()
+    
+    data['Time'] = data['Time'].astype(str)
+    data1 = data.sort_values(['Time'], ascending=[1])
+    data1 = data1['Time'].value_counts()
+    data1 = data1.sort_index()
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27, forward=True)
+    ax = data1.plot()
     return fig

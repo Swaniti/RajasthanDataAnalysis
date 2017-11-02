@@ -1,36 +1,137 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+<script>
+function validateForm() {
+    var x = document.forms["myForm"]["Maincategory"].value;
+    if (x == "") {
+        alert("Maincategory must be filled out");
+        return false;
+    }
+}
+</script>
+</head>
+
 <body>
+<div class="container">
 
-<form action="{% url 'analyse:index'%}" method="post">
-  {% csrf_token %}
-  <input type="radio" name="Maincategory" value="maincate1"> Patient traffic<br>
-  <input type="radio" name="Maincategory" value="maincate2"> Hour of day<br>
-  <input type="radio" name="Maincategory" value="maincate3"> Average time<br>
-  <input type="radio" name="Maincategory" value="maincate4"> Cases frequency<br>
-  <input type="radio" name="subcategory1" value="All"> All<br>
-  <input type="radio" name="subcategory1" value="Ajmer"> Ajmer<br>
-  <input type="radio" name="subcategory1" value="Alwer"> Alwer<br>
-  <input type="radio" name="subcategory2" value="All"> All<br>
-  <input type="radio" name="subcategory2" value="subcate22"> subcate22<br>
-  <input type="radio" name="subcategory2" value="subcate23"> subcate23<br>
-  <input type="radio" name="subcategory3" value="Public"> Public<br>
-  <input type="radio" name="subcategory3" value="Private"> Private<br>
-  <input type="submit" value="Submit">
-</form>
-{% if plots %}
-    <ul>
-    {% for plot in plots %}
-        <li>{{ plot }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No plots are available.</p>
-{% endif %}
+    <header>
+       <h1>Analyser</h1>
+    </header>
 
-{% load static %}
-{% with path as image_static %}
-  <img src="{% static image_static %}" alt="My image"/>
-{% endwith %}
+    <div class="forms">
+        <form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+            {% csrf_token %}
+            <h3>Select Main Category</h3>
+                <input type="radio" name="Maincategory" value="maincate1"> Patient traffic<br>
+                <input type="radio" name="Maincategory" value="maincate2"> Cases frequency<br>
+                <input type="radio" name="Maincategory" value="maincate3"> Average time<br>
+                <input type="radio" name="Maincategory" value="maincate4"> Hour of day<br>
+            <h3>Select District</h3>
+                <input type="radio" name="subcategory1" value="All"> All<br>
+                <input type="radio" name="subcategory1" value="Ajmer"> Ajmer<br>
+                <input type="radio" name="subcategory1" value="Alwer"> Alwer<br>
+            <h3>Select Divison</h3>
+                <input type="radio" name="subcategory2" value="All"> All<br>
+                <input type="radio" name="subcategory2" value="subcate22"> subcate22<br>
+                <input type="radio" name="subcategory2" value="subcate23"> subcate23<br>
+            <h3>Select Hospital Type</h3>
+                <input type="radio" name="subcategory3" value="Government Hospital"> Public<br>
+                <input type="radio" name="subcategory3" value="Private Hospital"> Private<br>
+        </form>
+        <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+    </div>
+
+    <div class="images">
+        {% load static %}
+        {% with path as image_static %}
+            <img src="{% static image_static %}" height=600px width=100% alt="My image"/>
+        {% endwith %}
+    </div>
+
+    <footer>Copyright &copy; MJ@nalyser</footer>
+
+</div>
+
+
+
+
 </body>
+
+<style>
+body {
+  margin:0px
+}
+
+div.container {
+  width: 100%;
+  height: 100%;
+  border: 1px solid gray;
+}
+
+header, footer {
+  padding: 0.1em;
+  color: white;
+  background-color: black;
+  clear: left;
+  text-align: center;
+}
+
+div.forms {
+  float: left;
+  max-width: 25%;
+  margin: 0;
+  padding: 0;
+  padding: 1em;
+}
+
+div.images {
+  margin-left: 26%;
+  border-left: 1px solid gray;
+  padding: 1em;
+  overflow: hidden;
+}
+
+.button {
+  display: inline-block;
+  border-radius: 2px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 14px;
+  padding: 10px;
+  width: 75px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -10px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 12px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+
 </html>
