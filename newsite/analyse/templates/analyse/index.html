@@ -24,20 +24,20 @@ function validateForm() {
         <form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
             {% csrf_token %}
             <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate1"> Patient traffic<br>
+                <input type="radio" name="Maincategory" value="maincate1" checked> Patient traffic<br>
                 <input type="radio" name="Maincategory" value="maincate2"> Cases frequency<br>
                 <input type="radio" name="Maincategory" value="maincate3"> Average time<br>
                 <input type="radio" name="Maincategory" value="maincate4"> Hour of day<br>
             <h3>Select District</h3>
-                <input type="radio" name="subcategory1" value="All"> All<br>
+                <input type="radio" name="subcategory1" value="All" checked> All<br>
                 <input type="radio" name="subcategory1" value="Ajmer"> Ajmer<br>
                 <input type="radio" name="subcategory1" value="Alwer"> Alwer<br>
             <h3>Select Divison</h3>
-                <input type="radio" name="subcategory2" value="All"> All<br>
+                <input type="radio" name="subcategory2" value="All" checked> All<br>
                 <input type="radio" name="subcategory2" value="subcate22"> subcate22<br>
                 <input type="radio" name="subcategory2" value="subcate23"> subcate23<br>
             <h3>Select Hospital Type</h3>
-                <input type="radio" name="subcategory3" value="Government Hospital"> Public<br>
+                <input type="radio" name="subcategory3" value="Government Hospital" checked> Public<br>
                 <input type="radio" name="subcategory3" value="Private Hospital"> Private<br>
         </form>
         <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
