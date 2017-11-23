@@ -27,7 +27,7 @@ def index(request):
 		STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 		img_path = os.path.join(STATIC_ROOT, 'analyse/images')
 
-		plot.savefig(os.path.join( img_path, str(maincate)+str(subcate1)+str(subcate3)+str(".png")))
+		plot.savefig(os.path.join( img_path, str(maincate)+str(subcate1)+str(subcate3)+str(".png")), bbox_inches = 'tight')
 
 		path = os.path.join( 'analyse/images', str(maincate)+str(subcate1)+str(subcate3)+str(".png")) #'images/filename.png'
 

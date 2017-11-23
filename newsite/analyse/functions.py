@@ -8,14 +8,25 @@ from datetime import datetime
 
 def analyser(data, maincate, subcategory1, subcategory3):
     if maincate == 'maincate1':
-        return patient_traffic(data, subcategory1, subcategory3)
+        return Daily_visit_count(data, subcategory1, subcategory3)
     elif maincate == 'maincate2':
         return cases_frequency(data, subcategory1, subcategory3)
+    elif maincate == 'maincate3':
+        return Average_time(data, subcategory1, subcategory3)
+    elif maincate == 'maincate4':
+        return Hour_of_day(data, subcategory1, subcategory3)
+    elif maincate == 'maincate5':
+        return special_hospital(data, maincate, subcategory1, subcategory3)
+    elif maincate == 'maincate6':
+        return special_hospital(data, maincate, subcategory1, subcategory3)
+    elif maincate == 'maincate7':
+        return special_hospital(data, maincate, subcategory1, subcategory3)
+    elif maincate == 'maincate8':
+        return special_hospital(data, maincate, subcategory1, subcategory3)
 
 
 
-
-def patient_traffic(data, subcategory1="All", subcategory3="Not"):
+def Daily_visit_count(data, subcategory1="All", subcategory3="Not"):
     if subcategory1 == "All":
         data = data
     else:
@@ -75,4 +86,132 @@ def cases_frequency(data, subcategory1="All", subcategory3="Not"):
     fig, ax = plt.subplots()
     fig.set_size_inches(11.7, 8.27, forward=True)
     ax = data1.plot()
+    return fig
+
+def Hour_of_day(data, subcategory1="All", subcategory3="Not"):
+    if subcategory1 == "All":
+        data = data
+    else:
+        data = data[data['District'] == subcategory1]
+        
+    if (subcategory3 == "Government Hospital") or (subcategory3 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory3]
+    else:
+        data = data
+        
+    df_n = data.copy()
+    df_n['Admission Time'] = df_n['Admission Time'].astype(str)
+    new = df_n[df_n['Admission Time'] != '-'].copy()
+    new.reset_index(inplace=True)
+
+    new['Admission Time'] = new['Admission Time'].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+    new['hour'] = new['Admission Time'].dt.hour
+    new['minute'] = new['Admission Time'].dt.minute
+    time = new['hour'].value_counts()
+
+    x = pd.DataFrame(time.index)
+    y = pd.DataFrame(time.values)
+    df = pd.concat([x,y], axis=1)
+    df.columns = ['hour', 'freq']
+    df['hour'][23] = 24
+    df.sort_values('hour')
+
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27, forward=True)
+    ax = sns.barplot(x="hour", y="freq", data=df)
+    ax.set(xlabel='hour of the day', ylabel='freq')
+    return fig
+
+def Average_time(data, subcategory1="All", subcategory3="Not"):
+    if subcategory1 == "All":
+        data = data
+    else:
+        data = data[data['District'] == subcategory1]
+        
+    if (subcategory3 == "Government Hospital") or (subcategory3 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory3]
+    else:
+        data = data
+        
+    df_n = data.copy()
+    df_n['Adm Date'] = df_n['Adm Date'].astype(str)
+    new = df_n[df_n['Adm Date'] != '-']
+    new.reset_index(inplace=True)
+    new['Adm Date'] = new['Adm Date'].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+
+    new = new[new['Disch Date'] != '-']
+    new.reset_index(inplace=True)
+    new['Disch Date'] = new['Disch Date'].astype(str)
+    new['Disch Date'] = new['Disch Date'].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+
+    new['time_difference'] = abs((new['Disch Date']-new['Adm Date']).dt.days)
+    H_data = new[['Hosp Name','time_difference']]
+    H_data = H_data.groupby('Hosp Name', as_index=False)['time_difference'].mean()
+    H_data = H_data.sort_values(['time_difference'], ascending=False).reset_index(drop=True)
+
+
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27, forward=True)
+    ax = sns.barplot(x="time_difference", y="Hosp Name", orient="h", data=H_data)
+    ax.set(xlabel='Average time(in days)', ylabel='Hospital Name')
+    return fig
+
+def special_hospital(data, maincate, subcategory1="All", subcategory3="Not"):
+    if subcategory1 == "All":
+        data = data
+    else:
+        data = data[data['District'] == subcategory1]
+        
+    if (subcategory3 == "Government Hospital") or (subcategory3 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory3]
+    else:
+        data = data
+        
+    general_disease = ['General Ward(per day):Unspecified -  Description of ailment to be written.',
+    'General Ward (Two Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (Three Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (Ten Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (Six Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (Seven Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (One Day):Unspecified -  Description of ailment to be written.',
+    'General Ward (Nine Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (Four Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (Five Days):Unspecified -  Description of ailment to be written.',
+    'General Ward (Eight Days):Unspecified -  Description of ailment to be written.',
+              ]
+    renal_dialysis_disease = ['Nephroureterectomy for Transitional Cell Carcinoma of renal pelvis (one side)',
+    'Laproscopic surgery for kidney & supra renal any type',
+    'Splenorenal Anastomosis', 'Splenectomy - For -  Trauma',
+    'Maintenance Hemodialysis (Mhd) (With Inj. Erythropoetine With Inj. Iron) –Per Dialysis.',
+    'Brachiocephalic Av Fistula For Hemodialysis',
+    'AV Shunt for dialysis', 'Aural polypectomy'
+                             ]
+
+    cardiac_disease = ['Reimplanation  of Urethra', 'Refractory Cardiac Failure']
+
+    natal_disease = ['Special Pkg for Neo Natal Care (Babies admitted with mild-moderate respiratory distress, Infections/sepsis with no major complications, Prolonged/persistent jaundice, Assisted feeding for low birth weight - babies (<1800 gms), Neonatal seizures)',
+    'Nephrectomy', 'neonatal jaundice #',
+    'Basic Package for Neo -  Natal Care (Package for Babies admitted for short term care for conditions like: Transient tachypnoea of newborn, Mild birth asphyxia, Jaundice requiring phototherapy, Hemorrhagic disease of newborn, Large for date',
+    'Advanced Pkg for - Neo Natal Care (Low birth weight babies <1500 gm and all babies admitted with complications like Meningitis, Severe respiratory distress - Shock, Coma, Convulsions or Encephalopathy, Jaundice requiring exchange transfusion, NEC)'
+    ]
+
+    if maincate == "maincate5":
+        disease_type = general_disease
+    elif maincate == "maincate6":
+        disease_type = renal_dialysis_disease
+    elif maincate == "maincate7":
+        disease_type = cardiac_disease    
+    elif maincate == "maincate8":
+        disease_type = natal_disease
+
+    data = data.copy()
+    data = data.loc[data['Pkg Name'].isin(disease_type)]  # change disease list name to get results for other diseases
+    data = data[['Hosp Name','Pkg Name']]
+    data['freq'] = np.ones((data.shape[0],), dtype=np.int)
+    data = data.groupby(['Hosp Name'], as_index=False)['freq'].sum()
+    data = data.sort_values(['freq'], ascending=False).reset_index(drop=True)
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27, forward=True)
+    ax = sns.barplot(x="freq", y="Hosp Name", orient="h", data=data)
+    ax.set(xlabel='cases frequency', ylabel='Hospital Name')
     return fig
