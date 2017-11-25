@@ -3,12 +3,14 @@
 
 <head>
 <script>
-function validateForm() {
-    var x = document.forms["myForm"]["Maincategory"].value;
-    if (x == "") {
-        alert("Maincategory must be filled out");
-        return false;
-    }
+function show(element) { 
+
+  //we hide both forms
+  document.getElementById("forms1").style.display="none";
+  document.getElementById("forms2").style.display="none";
+  document.getElementById("forms3").style.display="none";
+
+  document.getElementById(element).style.display="block";
 }
 </script>
 </head>
@@ -19,10 +21,15 @@ function validateForm() {
     <header>
        <h1>Analyser</h1>
     </header>
+    
+    <div class="forms1" id="forms1">
+    	<button type="button" onclick="show('forms1');">Hospital</button>
+		<button type="button" onclick="show('forms2');">Package</button>
+		<button type="button" onclick="show('forms3');">Patient</button>
 
-    <div class="forms">
         <form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
             {% csrf_token %}
+
             <h3>Select Main Category</h3>
                 <input type="radio" name="Maincategory" value="maincate1" checked> Daily visit count<br>
                 <input type="radio" name="Maincategory" value="maincate2"> Cases frequency<br>
@@ -43,6 +50,48 @@ function validateForm() {
             <h3>Select Hospital Type</h3>
                 <input type="radio" name="subcategory3" value="Government Hospital" checked> Public<br>
                 <input type="radio" name="subcategory3" value="Private Hospital"> Private<br>
+        </form>
+        <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+    </div>
+
+    <div class="forms2" id="forms2">
+        <button type="button" onclick="show('forms1');">Hospital</button>
+		<button type="button" onclick="show('forms2');">Package</button>
+		<button type="button" onclick="show('forms3');">Patient</button>
+		<form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+            {% csrf_token %}
+
+            <h3>Select Main Category</h3>
+                <input type="radio" name="Maincategory" value="maincate1" checked> Package approval and rejection<br>
+                <input type="radio" name="Maincategory" value="maincate2"> Maternal and Neo-natel package uptake<br>
+                <input type="radio" name="Maincategory" value="maincate3"> Renal and cardiac care package uptake<br>
+                <input type="radio" name="Maincategory" value="maincate4"> User defined package availed at any hospital<br>
+                <input type="radio" name="Maincategory" value="maincate5"> Top selling package in a user-defined month<br>
+            <h3>Select Package Code</h3>
+                <input type="radio" name="subcategory1" value="All" checked> All<br>
+            <h3>Select Package Name</h3>
+                <input type="radio" name="subcategory2" value="All" checked> All<br>
+            <h3>Select Hospital Type</h3>
+                <input type="radio" name="subcategory3" value="Government Hospital" checked> Public<br>
+                <input type="radio" name="subcategory3" value="Private Hospital"> Private<br>
+        </form>
+        <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+    </div>    
+
+    <div class="forms3" id="forms3">
+        <button type="button" onclick="show('forms1');">Hospital</button>
+		<button type="button" onclick="show('forms2');">Package</button>
+		<button type="button" onclick="show('forms3');">Patient</button>
+		<form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+            {% csrf_token %}
+
+            <h3>Select Main Category</h3>
+                <input type="radio" name="Maincategory" value="maincate1" checked> Length of stay<br>
+                <input type="radio" name="Maincategory" value="maincate2"> Package availed by patient<br>
+                <input type="radio" name="Maincategory" value="maincate3"> out-of-district patient<br>
+                <input type="radio" name="Maincategory" value="maincate4"> Prediction of beneficiary<br>
+            <h3>Select Patient ID</h3>
+                <input type="radio" name="subcategory1" value="All" checked> All<br>
         </form>
         <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
     </div>
@@ -82,9 +131,28 @@ header, footer {
   text-align: center;
 }
 
-div.forms {
+div.forms1 {
   float: left;
   max-width: 25%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding: 1em;
+}
+
+div.forms2 {
+  float: left;
+  max-width: 25%;
+  display: none;
+  margin: 0;
+  padding: 0;
+  padding: 1em;
+}
+
+div.forms3 {
+  float: left;
+  max-width: 25%;
+  display: none;
   margin: 0;
   padding: 0;
   padding: 1em;
