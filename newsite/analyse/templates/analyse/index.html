@@ -12,6 +12,32 @@ function show(element) {
 
   document.getElementById(element).style.display="block";
 }
+
+function show1(element, form_id) { 
+
+  //we hide both forms
+  document.getElementById("forms11").style.display="none";
+  document.getElementById("forms12").style.display="none";
+  document.getElementById("subcategory1").disabled = true;
+  document.getElementById("subcategory2").disabled = true;
+  
+  document.getElementById(element).style.display="block";
+  document.getElementById(form_id).disabled = false;
+}
+
+function show2(element, form_id) { 
+
+  //we hide both forms
+  document.getElementById("forms21").style.display="none";
+  document.getElementById("forms22").style.display="none";
+  document.getElementById("forms23").style.display="none";
+  document.getElementById("subcategory41").disabled = true;
+  document.getElementById("subcategory42").disabled = true;
+  document.getElementById("subcategory43").disabled = true;
+  
+  document.getElementById(element).style.display="block";
+  document.getElementById(form_id).disabled = false;
+}
 </script>
 </head>
 
@@ -27,11 +53,11 @@ function show(element) {
 		<button type="button" onclick="show('forms2');">Package</button>
 		<button type="button" onclick="show('forms3');">Patient</button>
 
-        <form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+        <form name="myForm" id="nameform1" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
             {% csrf_token %}
 
             <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate1" checked> Daily visit count<br>
+                <input type="radio" name="Maincategory" value="maincate1"> Daily visit count<br>
                 <input type="radio" name="Maincategory" value="maincate2"> Cases frequency<br>
                 <input type="radio" name="Maincategory" value="maincate3"> Mean time spent<br>
                 <input type="radio" name="Maincategory" value="maincate4"> Hotspot time of day<br>
@@ -39,61 +65,112 @@ function show(element) {
                 <input type="radio" name="Maincategory" value="maincate6"> Hospital for renal_dialysis_disease<br>
                 <input type="radio" name="Maincategory" value="maincate7"> Hospital for cardiac_disease<br>
                 <input type="radio" name="Maincategory" value="maincate8"> Hospital for natal_disease<br>
-            <h3>Select District</h3>
-                <input type="radio" name="subcategory1" value="All" checked> All<br>
-                <input type="radio" name="subcategory1" value="Ajmer"> Ajmer<br>
-                <input type="radio" name="subcategory1" value="Alwer"> Alwer<br>
-            <h3>Select Divison</h3>
-                <input type="radio" name="subcategory2" value="All" checked> All<br>
-                <input type="radio" name="subcategory2" value="subcate22"> subcate22<br>
-                <input type="radio" name="subcategory2" value="subcate23"> subcate23<br>
+                <input type="radio" name="Maincategory" value="maincate9"> Rupee value of package sold<br>
+
+        	<button type="button" onclick="show1('forms11', 'subcategory1');">District</button>
+			<button type="button" onclick="show1('forms12', 'subcategory2');">Divison</button>
+
+			<div class="forms11" id="forms11">
+            	<h3>Select District</h3>
+					<select id="subcategory1" name="subcategory1">
+						<option value="All">All</option>
+						{% for i in dist_list%}
+							<option value="{{ i }}">{{ i }}</option>
+						{% endfor %}
+					</select>
+            </div>
+
+            <div class="forms12" id="forms12">
+            	<h3>Select Divison</h3>
+                	<select disabled id="subcategory2" name="subcategory2">
+						<option value="All">All</option>
+						<option value="first">first</option>
+						<option value="second">second</option>
+					</select>
+            </div>
+
             <h3>Select Hospital Type</h3>
-                <input type="radio" name="subcategory3" value="Government Hospital" checked> Public<br>
-                <input type="radio" name="subcategory3" value="Private Hospital"> Private<br>
+            	<select name="subcategory3">
+					<option value="Government Hospital">Government Hospital</option>
+					<option value="Private Hospital">Private Hospital</option>
+				</select>
+
         </form>
-        <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+        <button type="submit" form="nameform1" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
     </div>
 
     <div class="forms2" id="forms2">
         <button type="button" onclick="show('forms1');">Hospital</button>
 		<button type="button" onclick="show('forms2');">Package</button>
 		<button type="button" onclick="show('forms3');">Patient</button>
-		<form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+		<form name="myForm" id="nameform2" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
             {% csrf_token %}
 
             <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate1" checked> Package approval and rejection<br>
-                <input type="radio" name="Maincategory" value="maincate2"> Maternal and Neo-natel package uptake<br>
-                <input type="radio" name="Maincategory" value="maincate3"> Renal and cardiac care package uptake<br>
-                <input type="radio" name="Maincategory" value="maincate4"> User defined package availed at any hospital<br>
-                <input type="radio" name="Maincategory" value="maincate5"> Top selling package in a user-defined month<br>
-            <h3>Select Package Code</h3>
-                <input type="radio" name="subcategory1" value="All" checked> All<br>
-            <h3>Select Package Name</h3>
-                <input type="radio" name="subcategory2" value="All" checked> All<br>
+                <input type="radio" name="Maincategory" value="maincate10"> Package approval and rejection rate<br>
+                <input type="radio" name="Maincategory" value="maincate11"> package uptake<br>
+                <input type="radio" name="Maincategory" value="maincate12"> Top selling package Code<br>
+            
+            <button type="button" onclick="show2('forms21', 'subcategory41');">Normal Package</button>
+			<button type="button" onclick="show2('forms22', 'subcategory42');">Renal Package</button>
+			<button type="button" onclick="show2('forms23', 'subcategory43');">Maternal Package</button>
+
+			<div class="forms21" id="forms21">
+            	<h3>Normal Package Name</h3>
+            		<select id="subcategory41" name="subcategory4" style="max-width:90%;">
+            			{% for i in pkg_list%}
+							<option value="{{ i }}">{{ i }}</option>
+						{% endfor %}
+					</select>
+            </div>
+
+            <div class="forms22" id="forms22">
+            	<h3>Renal Package Name</h3>
+            		<select id="subcategory42" name="subcategory4" style="max-width:90%;">
+            			{% for i in renal_cardiac_disease%}
+							<option value="{{ i }}">{{ i }}</option>
+						{% endfor %}
+					</select>
+            </div>
+
+            <div class="forms23" id="forms23">
+            	<h3>Maternal and Neo-natal Package Name</h3>
+            		<select id="subcategory43" name="subcategory4" style="max-width:90%;">
+            			{% for i in natal_disease%}
+							<option value="{{ i }}">{{ i }}</option>
+						{% endfor %}
+					</select>
+            </div>
+
+
+            
+
             <h3>Select Hospital Type</h3>
-                <input type="radio" name="subcategory3" value="Government Hospital" checked> Public<br>
-                <input type="radio" name="subcategory3" value="Private Hospital"> Private<br>
+            	<select name="subcategory5">
+					<option value="Government Hospital">Government Hospital</option>
+					<option value="Private Hospital">Private Hospital</option>
+				</select>
+
         </form>
-        <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+        <button type="submit" form="nameform2" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
     </div>    
 
     <div class="forms3" id="forms3">
         <button type="button" onclick="show('forms1');">Hospital</button>
 		<button type="button" onclick="show('forms2');">Package</button>
 		<button type="button" onclick="show('forms3');">Patient</button>
-		<form name="myForm" id="nameform" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+		<form name="myForm" id="nameform3" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
             {% csrf_token %}
 
             <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate1" checked> Length of stay<br>
-                <input type="radio" name="Maincategory" value="maincate2"> Package availed by patient<br>
-                <input type="radio" name="Maincategory" value="maincate3"> out-of-district patient<br>
-                <input type="radio" name="Maincategory" value="maincate4"> Prediction of beneficiary<br>
+                <input type="radio" name="Maincategory" value="maincate15"> Length of stay<br>
+                <input type="radio" name="Maincategory" value="maincate16"> Package availed by patient<br>
+                <input type="radio" name="Maincategory" value="maincate17"> out-of-district patient<br>
+                <input type="radio" name="Maincategory" value="maincate18"> Prediction of beneficiary<br>
             <h3>Select Patient ID</h3>
-                <input type="radio" name="subcategory1" value="All" checked> All<br>
+                <input type="radio" name="subcategory1" value="All"> All<br>
         </form>
-        <button type="submit" form="nameform" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+        <button type="submit" form="nameform3" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
     </div>
 
     <div class="images">
@@ -138,6 +215,26 @@ div.forms1 {
   margin: 0;
   padding: 0;
   padding: 1em;
+}
+
+div.forms11 {
+  display: block;
+}
+
+div.forms12 {
+  display: none;
+}
+
+div.forms21 {
+  display: block;
+}
+
+div.forms22 {
+  display: none;
+}
+
+div.forms23 {
+  display: none;
 }
 
 div.forms2 {

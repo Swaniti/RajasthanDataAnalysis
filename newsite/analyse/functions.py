@@ -6,7 +6,7 @@ import math
 from datetime import datetime
 
 
-def analyser(data, maincate, subcategory1, subcategory3):
+def analyser(data, maincate, subcategory1, subcategory3, subcategory4, subcategory5):
     if maincate == 'maincate1':
         return Daily_visit_count(data, subcategory1, subcategory3)
     elif maincate == 'maincate2':
@@ -23,7 +23,14 @@ def analyser(data, maincate, subcategory1, subcategory3):
         return special_hospital(data, maincate, subcategory1, subcategory3)
     elif maincate == 'maincate8':
         return special_hospital(data, maincate, subcategory1, subcategory3)
-
+    elif maincate == 'maincate9':
+        return top_package_sold(data, subcategory1, subcategory3)    
+    elif maincate == 'maincate10':
+        return pkg_code(data, subcategory4, subcategory5)
+    elif maincate == 'maincate11':
+        return pkg_uptake(data, subcategory4, subcategory5)
+    elif maincate == 'maincate12':
+        return top_packages(data, subcategory4, subcategory5)
 
 
 def Daily_visit_count(data, subcategory1="All", subcategory3="Not"):
@@ -214,4 +221,83 @@ def special_hospital(data, maincate, subcategory1="All", subcategory3="Not"):
     fig.set_size_inches(11.7, 8.27, forward=True)
     ax = sns.barplot(x="freq", y="Hosp Name", orient="h", data=data)
     ax.set(xlabel='cases frequency', ylabel='Hospital Name')
+    return fig
+
+def top_package_sold(data, subcategory1="All", subcategory3="Not"):
+    if subcategory1 == "All":
+        data = data
+    else:
+        data = data[data['District'] == subcategory1]
+        
+    if (subcategory3 == "Government Hospital") or (subcategory3 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory3]
+    else:
+        data = data
+        
+    n_data = data.groupby(['year','month'], as_index=False)['Pkg Rate'].sum()
+    
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27)
+    ax = sns.barplot(x="month", y="Pkg Rate", hue='year', data=n_data)
+    ax.set(xlabel='month', ylabel='Rupee value of package sold')
+    
+    return fig
+
+def pkg_code(data, subcategory4, subcategory5):
+    data = data[data['Pkg Name'] == subcategory4].copy()
+
+    if (subcategory5 == "Government Hospital") or (subcategory5 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory5]
+    else:
+        data = data
+
+    # see most common used Packages
+    data['Present Pkg Status'].replace(['claimPackageApprovedandPaid', 'claimPackageApproved',
+       'claimPackageRejected', 'claimRejectedByAnalyser',
+       'claimQueryByAnalyser', 'claimApprovalPendingAtAnalyser',
+       'claimapprovalpending', 'revertBackToAnalyserByClaim',
+       'fundEnhancementPackageQuery', 'preAuthApproved',
+       'preAuthPackageRejected', 'fundEnhancementPackageRejected',
+       'fundEnhancementApprovalPending', 'preAuthApprovalPending',
+       'preAuthPackageQuery', 'queryreplytodecesion'],["Accept","Accept","Reject","Reject","Reject","Reject","Reject","Reject","Reject","Accept","Reject","Reject","Reject","Reject","Reject","Reject"], inplace=True)
+
+    ct = pd.crosstab(data["month"], data["Present Pkg Status"]).apply(lambda r: r/r.sum(), axis=1)
+    stacked = ct.stack().reset_index().rename(columns={0:'value'})
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27)
+    ax = sns.barplot(x=stacked['Present Pkg Status'], y=stacked['value'], hue=stacked['month'])
+    ax.set(xlabel='Package Status', ylabel='Percentage')
+    return fig
+
+def pkg_uptake(data, subcategory4, subcategory5):
+    data = data[data['Pkg Name'] == subcategory4].copy()
+
+    if (subcategory5 == "Government Hospital") or (subcategory5 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory5]
+    else:
+        data = data
+
+    ct = data.groupby(['month', 'Pkg Code']).size().reset_index(name='counts')
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27)
+    ax = sns.barplot(x=ct['month'], y=ct['counts'])
+    ax.set(xlabel='month', ylabel='uptake')
+    return fig
+
+def top_packages(data, subcategory4, subcategory5):
+    data = data[data['month'] == 6].copy()
+
+    if (subcategory5 == "Government Hospital") or (subcategory5 == "Private Hospital"):
+        data = data[data['Hospital Type'] == subcategory5]
+    else:
+        data = data
+        
+    unique, counts = np.unique(data['Pkg Code'], return_counts=True)
+    unique_packages = pd.DataFrame(np.asarray((unique, counts)).T)
+    ndata = unique_packages[unique_packages[1] > 0].sort_values(by=1, ascending=False)
+    ndata.columns = ['package_name', 'counts']
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27, forward=True)
+    ax = sns.barplot(x="counts", y="package_name", orient="h", data=ndata[:10])
+    ax.set(xlabel='counts', ylabel='package_name')
     return fig
