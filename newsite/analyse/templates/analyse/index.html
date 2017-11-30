@@ -137,9 +137,9 @@ function show2(element, form_id) {
             	<h3>Maternal and Neo-natal Package Name</h3>
             		<select id="subcategory43" name="subcategory4" style="max-width:90%;">
             			{% for i in natal_disease%}
-							<option value="{{ i }}">{{ i }}</option>
-						{% endfor %}
-					</select>
+							     <option value="{{ i }}">{{ i }}</option>
+						      {% endfor %}
+					      </select>
             </div>
 
 
@@ -163,12 +163,12 @@ function show2(element, form_id) {
             {% csrf_token %}
 
             <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate15"> Length of stay<br>
-                <input type="radio" name="Maincategory" value="maincate16"> Package availed by patient<br>
-                <input type="radio" name="Maincategory" value="maincate17"> out-of-district patient<br>
-                <input type="radio" name="Maincategory" value="maincate18"> Prediction of beneficiary<br>
-            <h3>Select Patient ID</h3>
-                <input type="radio" name="subcategory1" value="All"> All<br>
+                <input type="radio" name="Maincategory" value="maincate13"> Length of stay<br>
+                <input type="radio" name="Maincategory" value="maincate14"> Amount spent per visit<br>
+                <input type="radio" name="Maincategory" value="maincate15"> out-of-district patient<br>
+                <input type="radio" name="Maincategory" value="maincate16"> Prediction of beneficiary<br>
+            <h3>Patient ID</h3>
+                <input type="text" name="subcategory6"><br>
         </form>
         <button type="submit" form="nameform3" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
     </div>

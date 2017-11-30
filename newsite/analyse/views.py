@@ -35,18 +35,18 @@ def index(request):
 		subcate3 = request.POST.get("subcategory3", "")
 		subcate4 = request.POST.get("subcategory4", "")
 		subcate5 = request.POST.get("subcategory5", "")
+		subcate6 = request.POST.get("subcategory6", "")
 
-		plot = analyser(data, maincate, subcate1, subcate3, subcate4, subcate5)
+		plot = analyser(data, maincate, subcate1, subcate3, subcate4, subcate5, subcate6)
 		
 		BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 		STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 		img_path = os.path.join(STATIC_ROOT, 'analyse/images')
 
-		plot.savefig(os.path.join( img_path, str(maincate)+str(subcate1)+str(subcate3)+str(".png")), bbox_inches = 'tight')
+		plot.savefig(os.path.join( img_path, str(maincate)+str(subcate1)+str(subcate3)+str(subcate4)+str(subcate5)+str(subcate6)+str(".png")), bbox_inches = 'tight')
 
-		path = os.path.join( 'analyse/images', str(maincate)+str(subcate1)+str(subcate3)+str(".png")) #'images/filename.png'
+		path = os.path.join( 'analyse/images', str(maincate)+str(subcate1)+str(subcate3)+str(subcate4)+str(subcate5)+str(subcate6)+str(".png")) #'images/filename.png'
 
-		lista = [maincate,subcate1,subcate2,subcate3,subcate4]
 		return render(request, 'analyse/index.html', {"pkg_list": pkg_list, "dist_list": dist_list, "renal_cardiac_disease":renal_cardiac_disease, "natal_disease":natal_disease, "path": path})
 
 def compute():

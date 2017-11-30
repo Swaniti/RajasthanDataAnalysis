@@ -6,7 +6,7 @@ import math
 from datetime import datetime
 
 
-def analyser(data, maincate, subcategory1, subcategory3, subcategory4, subcategory5):
+def analyser(data, maincate, subcategory1, subcategory3, subcategory4, subcategory5, subcategory6):
     if maincate == 'maincate1':
         return Daily_visit_count(data, subcategory1, subcategory3)
     elif maincate == 'maincate2':
@@ -31,7 +31,45 @@ def analyser(data, maincate, subcategory1, subcategory3, subcategory4, subcatego
         return pkg_uptake(data, subcategory4, subcategory5)
     elif maincate == 'maincate12':
         return top_packages(data, subcategory4, subcategory5)
+    elif maincate == 'maincate13':
+    	return visit_and_average_time(data, subcategory6)
+    elif maincate == 'maincate14':
+    	return visit_and_package_value(data, subcategory6)
 
+
+def visit_and_package_value(data, ID):
+    df_n = data.copy()
+    df_n = df_n[df_n['Identity No']==ID]
+
+    H_data = pd.DataFrame(df_n['Pkg Rate'])
+    H_data.reset_index(drop=True, inplace=True)
+
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27, forward=True)
+    ax = sns.barplot(x=H_data['Pkg Rate'], y=H_data.index+1, orient="h")
+    ax.set(xlabel='Rupee by packages', ylabel='No. of visit')
+    return fig
+def visit_and_average_time(data, ID):
+    df_n = data.copy()
+    df_n = df_n[df_n['Identity No']==ID]
+    df_n['Adm Date'] = df_n['Adm Date'].astype(str)
+    new = df_n[df_n['Adm Date'] != '-']
+    new.reset_index(inplace=True)
+    new['Adm Date'] = new['Adm Date'].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+
+    new = new[new['Disch Date'] != '-']
+    new.reset_index(inplace=True)
+    new['Disch Date'] = new['Disch Date'].astype(str)
+    new['Disch Date'] = new['Disch Date'].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+
+    new['time_difference'] = abs((new['Disch Date']-new['Adm Date']).dt.days)
+    H_data = pd.DataFrame(new['time_difference'])
+
+    fig, ax = plt.subplots()
+    fig.set_size_inches(11.7, 8.27, forward=True)
+    ax = sns.barplot(x=H_data.time_difference, y=H_data.index+1, orient="h")
+    ax.set(xlabel='Average time(in days)', ylabel='No. of visit')
+    return fig
 
 def Daily_visit_count(data, subcategory1="All", subcategory3="Not"):
     if subcategory1 == "All":
