@@ -9,7 +9,7 @@ from .functions import analyser
 import pandas as pd
 import os
 
-data = pd.read_csv('/home/itachi/newsite/static/data.csv')
+data = pd.read_csv('/home/ubuntu/RJ-anal/Django-app/newsite/static/data.csv')
 pkg_list = sorted(list(data['Pkg Name'].unique()))
 dist_list = sorted(list(data['Dist Name'].unique()))
 renal_cardiac_disease = ['Nephroureterectomy for Transitional Cell Carcinoma of renal pelvis (one side)',
