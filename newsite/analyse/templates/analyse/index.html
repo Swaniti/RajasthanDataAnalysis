@@ -38,6 +38,52 @@ function show2(element, form_id) {
   document.getElementById(element).style.display="block";
   document.getElementById(form_id).disabled = false;
 }
+
+function monthselect1() {
+    if (document.getElementById('maincate5').checked) {
+      document.getElementById("selectiveforms1").style.display="none";
+      document.getElementById("forms11").style.display="none";
+      document.getElementById("forms12").style.display="none";
+      document.getElementById("subcategory1").disabled = true;
+      document.getElementById("subcategory2").disabled = true;
+
+      document.getElementById("forms10").style.display="block";
+      document.getElementById('subcategory10').disabled = false;
+    }
+    else {
+      document.getElementById("forms10").style.display="none";
+      document.getElementById('subcategory10').disabled = true;
+
+      document.getElementById("selectiveforms1").style.display="block";
+      document.getElementById("forms11").style.display="block";
+      document.getElementById("subcategory1").disabled = false;
+
+    }
+}
+
+function monthselect() {
+    if (document.getElementById('maincate12').checked) {
+      document.getElementById("selectiveforms").style.display="none";
+      document.getElementById("forms21").style.display="none";
+      document.getElementById("forms22").style.display="none";
+      document.getElementById("forms23").style.display="none";
+      document.getElementById("subcategory41").disabled = true;
+      document.getElementById("subcategory42").disabled = true;
+      document.getElementById("subcategory43").disabled = true;
+
+      document.getElementById("forms20").style.display="block";
+      document.getElementById('subcategory40').disabled = false;
+    }
+    else {
+      document.getElementById("forms20").style.display="none";
+      document.getElementById('subcategory40').disabled = true;
+
+      document.getElementById("selectiveforms").style.display="block";
+      document.getElementById("forms21").style.display="block";
+      document.getElementById("subcategory41").disabled = false;
+
+    }
+}
 </script>
 </head>
 
@@ -48,139 +94,191 @@ function show2(element, form_id) {
        <h1>Analyser</h1>
     </header>
     
-    <div class="forms1" id="forms1">
-    	<button type="button" onclick="show('forms1');">Hospital</button>
+
+
+  <div class="forms1" id="forms1">
+
+    <button type="button" onclick="show('forms1');">Hospital</button>
 		<button type="button" onclick="show('forms2');">Package</button>
 		<button type="button" onclick="show('forms3');">Patient</button>
 
-        <form name="myForm" id="nameform1" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
-            {% csrf_token %}
+    <form name="myForm" id="nameform1" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+      {% csrf_token %}
 
-            <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate1"> Daily visit count<br>
-                <input type="radio" name="Maincategory" value="maincate2"> Cases frequency<br>
-                <input type="radio" name="Maincategory" value="maincate3"> Mean time spent<br>
-                <input type="radio" name="Maincategory" value="maincate4"> Hotspot time of day<br>
-                <input type="radio" name="Maincategory" value="maincate5"> Hospital for general disease<br>
-                <input type="radio" name="Maincategory" value="maincate6"> Hospital for renal_dialysis_disease<br>
-                <input type="radio" name="Maincategory" value="maincate7"> Hospital for cardiac_disease<br>
-                <input type="radio" name="Maincategory" value="maincate8"> Hospital for natal_disease<br>
-                <input type="radio" name="Maincategory" value="maincate9"> Rupee value of package sold<br>
+        <h3>Select Main Category</h3>
+          <input type="radio" name="Maincategory" value="maincate1" id="maincate1" onclick="monthselect1();"> Average monthly count<br>
+          <input type="radio" name="Maincategory" value="maincate2" id="maincate2" onclick="monthselect1();"> Cases frequency<br>
+          <input type="radio" name="Maincategory" value="maincate3" id="maincate3" onclick="monthselect1();"> Mean time spent<br>
+          <input type="radio" name="Maincategory" value="maincate4" id="maincate4" onclick="monthselect1();"> Hotspot time of day<br>
+          <input type="radio" name="Maincategory" value="maincate5" id="maincate5" onclick="monthselect1();"> Top package sold and prediction<br>
+        
 
-        	<button type="button" onclick="show1('forms11', 'subcategory1');">District</button>
-			<button type="button" onclick="show1('forms12', 'subcategory2');">Divison</button>
+        <div class="forms10" id="forms10">
+          <h3>Month</h3>
+            <select disabled id="subcategory10" name="subcategory1" style="max-width:90%;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+        </div>
 
-			<div class="forms11" id="forms11">
-            	<h3>Select District</h3>
-					<select id="subcategory1" name="subcategory1">
-						<option value="All">All</option>
-						{% for i in dist_list%}
-							<option value="{{ i }}">{{ i }}</option>
-						{% endfor %}
-					</select>
-            </div>
+        <div id="selectiveforms1">
+          <h3>Select District/Divison</h3>
+      	  <button type="button" onclick="show1('forms11', 'subcategory1');">District</button>
+		      <button type="button" onclick="show1('forms12', 'subcategory2');">Divison</button>
+        </div>
 
-            <div class="forms12" id="forms12">
-            	<h3>Select Divison</h3>
-                	<select disabled id="subcategory2" name="subcategory2">
-						<option value="All">All</option>
-						<option value="first">first</option>
-						<option value="second">second</option>
-					</select>
-            </div>
+        <div class="forms11" id="forms11">
+  					<select id="subcategory1" name="subcategory1">
+  						<option value="All">All</option>
+  						{% for i in dist_list%}
+  							<option value="{{ i }}">{{ i }}</option>
+  						{% endfor %}
+  					</select>
+        </div>
 
-            <h3>Select Hospital Type</h3>
-            	<select name="subcategory3">
-					<option value="Government Hospital">Government Hospital</option>
-					<option value="Private Hospital">Private Hospital</option>
-				</select>
+        <div class="forms12" id="forms12">
+            <select disabled id="subcategory2" name="subcategory2">
+  						<option value="All">All</option>
+  						<option value="first">first</option>
+  						<option value="second">second</option>
+  					</select>
+        </div>
 
-        </form>
-        <button type="submit" form="nameform1" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
-    </div>
+        <h3>Select Hospital Type</h3>
+          <select name="subcategory3">
+  					<option value="Government Hospital">Government Hospital</option>
+  					<option value="Private Hospital">Private Hospital</option>
+  				</select>
 
-    <div class="forms2" id="forms2">
-        <button type="button" onclick="show('forms1');">Hospital</button>
+    </form>
+
+      <button type="submit" form="nameform1" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+        
+  </div>
+
+
+
+
+  <div class="forms2" id="forms2">
+    
+    <button type="button" onclick="show('forms1');">Hospital</button>
 		<button type="button" onclick="show('forms2');">Package</button>
 		<button type="button" onclick="show('forms3');">Patient</button>
-		<form name="myForm" id="nameform2" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
-            {% csrf_token %}
+		
+    <form name="myForm" id="nameform2" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+      {% csrf_token %}
 
-            <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate10"> Package approval and rejection rate<br>
-                <input type="radio" name="Maincategory" value="maincate11"> package uptake<br>
-                <input type="radio" name="Maincategory" value="maincate12"> Top selling package Code<br>
-            
-            <button type="button" onclick="show2('forms21', 'subcategory41');">Normal Package</button>
-			<button type="button" onclick="show2('forms22', 'subcategory42');">Renal Package</button>
-			<button type="button" onclick="show2('forms23', 'subcategory43');">Maternal Package</button>
-
-			<div class="forms21" id="forms21">
-            	<h3>Normal Package Name</h3>
-            		<select id="subcategory41" name="subcategory4" style="max-width:90%;">
-            			{% for i in pkg_list%}
-							<option value="{{ i }}">{{ i }}</option>
-						{% endfor %}
-					</select>
-            </div>
-
-            <div class="forms22" id="forms22">
-            	<h3>Renal Package Name</h3>
-            		<select id="subcategory42" name="subcategory4" style="max-width:90%;">
-            			{% for i in renal_cardiac_disease%}
-							<option value="{{ i }}">{{ i }}</option>
-						{% endfor %}
-					</select>
-            </div>
-
-            <div class="forms23" id="forms23">
-            	<h3>Maternal and Neo-natal Package Name</h3>
-            		<select id="subcategory43" name="subcategory4" style="max-width:90%;">
-            			{% for i in natal_disease%}
-							     <option value="{{ i }}">{{ i }}</option>
-						      {% endfor %}
-					      </select>
-            </div>
+        <h3>Select Main Category</h3>
+            <input type="radio" name="Maincategory" value="maincate10" id="maincate10" onclick="monthselect();"> Package approval and rejection rate<br>
+            <input type="radio" name="Maincategory" value="maincate11" id="maincate11" onclick="monthselect();"> package uptake<br>
+            <input type="radio" name="Maincategory" value="maincate12" id="maincate12" onclick="monthselect();"> Top selling package Code<br>
+        
+        <div class="forms20" id="forms20">
+          <h3>Month</h3>
+            <select disabled id="subcategory40" name="subcategory4" style="max-width:90%;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+        </div>
 
 
-            
+        <div id="selectiveforms">
+          <button type="button" onclick="show2('forms21', 'subcategory41');">Normal Package</button>
+  			  <button type="button" onclick="show2('forms22', 'subcategory42');">Renal Package</button>
+  			  <button type="button" onclick="show2('forms23', 'subcategory43');">Maternal Package</button>
+        </div>
 
-            <h3>Select Hospital Type</h3>
-            	<select name="subcategory5">
-					<option value="Government Hospital">Government Hospital</option>
-					<option value="Private Hospital">Private Hospital</option>
-				</select>
+  			<div class="forms21" id="forms21">
+          <h3>Normal Package Name</h3>
+            <select id="subcategory41" name="subcategory4" style="max-width:90%;">
+            	{% for i in pkg_list%}
+							  <option value='{{ i }}'>{{ i }}</option>
+						  {% endfor %}
+					  </select>
+        </div>
 
-        </form>
-        <button type="submit" form="nameform2" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
-    </div>    
+        <div class="forms22" id="forms22">
+          <h3>Renal Package Name</h3>
+            <select disabled id="subcategory42" name="subcategory4" style="max-width:90%;">
+            	{% for i in renal_cardiac_disease%}
+  					     	<option value="{{ i }}">{{ i }}</option>
+  						{% endfor %}
+  					</select>
+        </div>
 
-    <div class="forms3" id="forms3">
-        <button type="button" onclick="show('forms1');">Hospital</button>
+        <div class="forms23" id="forms23">
+          <h3>Maternal and Neo-natal Package Name</h3>
+            <select disabled id="subcategory43" name="subcategory4" style="max-width:90%;">
+              {% for i in natal_disease%}
+  							<option value="{{ i }}">{{ i }}</option>
+  						{% endfor %}
+  					</select>
+        </div>
+
+
+        <h3>Select Hospital Type</h3>
+          <select name="subcategory5">
+					  <option value="Government Hospital">Government Hospital</option>
+				  	<option value="Private Hospital">Private Hospital</option>
+			   	</select>
+
+    </form>
+
+      <button type="submit" form="nameform2" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+  
+  </div>    
+
+  <div class="forms3" id="forms3">
+    <button type="button" onclick="show('forms1');">Hospital</button>
 		<button type="button" onclick="show('forms2');">Package</button>
 		<button type="button" onclick="show('forms3');">Patient</button>
-		<form name="myForm" id="nameform3" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
-            {% csrf_token %}
+		
+    <form name="myForm" id="nameform3" action="{% url 'analyse:index'%}" onsubmit="return validateForm()" method="post">
+      {% csrf_token %}
 
-            <h3>Select Main Category</h3>
-                <input type="radio" name="Maincategory" value="maincate13"> Length of stay<br>
-                <input type="radio" name="Maincategory" value="maincate14"> Amount spent per visit<br>
-                <input type="radio" name="Maincategory" value="maincate15"> out-of-district patient<br>
-                <input type="radio" name="Maincategory" value="maincate16"> Prediction of beneficiary<br>
-            <h3>Patient ID</h3>
-                <input type="text" name="subcategory6"><br>
-        </form>
-        <button type="submit" form="nameform3" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
-    </div>
+        <h3>Select Main Category</h3>
+          <input type="radio" name="Maincategory" value="maincate13"> Length of stay<br>
+          <input type="radio" name="Maincategory" value="maincate14"> Amount spent per visit<br>
+          <input type="radio" name="Maincategory" value="maincate15"> out-of-district patient<br>
+          <input type="radio" name="Maincategory" value="maincate16"> Prediction of beneficiary<br>
 
-    <div class="images">
-        {% load static %}
-        {% with path as image_static %}
-            <img src="{% static image_static %}" height=600px width=100% alt="My image"/>
-        {% endwith %}
-    </div>
+        <h3>Patient ID</h3>
+          <input type="text" name="subcategory6"><br>
 
-    <footer>Copyright &copy; MJ@nalyser</footer>
+    </form>
+
+      <button type="submit" form="nameform3" value="Submit" class="button" style="vertical-align:middle"><span>Submit </span></button>
+    
+  </div>
+
+  <div class="images">
+    {% load static %}
+    {% with path as image_static %}
+      <img src="{% static image_static %}" height=600px width=100% alt="My image"/>
+    {% endwith %}
+  </div>
+
+  <footer>Copyright &copy; MJ@nalyser</footer>
 
 </div>
 
@@ -190,6 +288,7 @@ function show2(element, form_id) {
 </body>
 
 <style>
+
 body {
   margin:0px
 }
@@ -217,11 +316,36 @@ div.forms1 {
   padding: 1em;
 }
 
+div.forms10 {
+  display: none;
+}
+
+div.selectiveforms1 {
+  display: none;
+}
+
 div.forms11 {
   display: block;
 }
 
 div.forms12 {
+  display: none;
+}
+
+div.forms2 {
+  float: left;
+  max-width: 25%;
+  display: none;
+  margin: 0;
+  padding: 0;
+  padding: 1em;
+}
+
+div.forms20 {
+  display: none;
+}
+
+div.selectiveforms {
   display: none;
 }
 
@@ -235,15 +359,6 @@ div.forms22 {
 
 div.forms23 {
   display: none;
-}
-
-div.forms2 {
-  float: left;
-  max-width: 25%;
-  display: none;
-  margin: 0;
-  padding: 0;
-  padding: 1em;
 }
 
 div.forms3 {
@@ -301,6 +416,7 @@ div.images {
   opacity: 1;
   right: 0;
 }
+
 </style>
 
 </html>
